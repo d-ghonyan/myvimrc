@@ -1,4 +1,4 @@
-set mouse=r
+set mouse=a
 set autoindent
 set tabstop=4
 syntax on
