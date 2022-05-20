@@ -1,20 +1,9 @@
-" **************************************************************************** "
-"                                                                              "
-"                                                         :::      ::::::::    "
-"    .myvimrc                                           :+:      :+:    :+:    "
-"                                                     +:+ +:+         +:+      "
-"    By: dghonyan <marvin@42.fr>                    +#+  +:+       +#+         "
-"                                                 +#+#+#+#+#+   +#+            "
-"    Created: 2022/05/08 16:41:31 by dghonyan          #+#    #+#              "
-"    Updated: 2022/05/08 17:50:37 by dghonyan         ###   ########.fr        "
-"                                                                              "
-" **************************************************************************** "
-
 set mouse=r
 set autoindent
 set tabstop=4
 syntax on
 colorscheme elflord
+
 inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ( ()<left>
