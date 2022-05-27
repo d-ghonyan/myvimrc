@@ -4,6 +4,7 @@ set tabstop=4
 syntax on
 colorscheme elflord
 
+inoremap #i #include<space>
 inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ( ()<left>
