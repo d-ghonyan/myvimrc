@@ -8,6 +8,7 @@ inoremap #i #include<space>
 inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ( ()<left>
+inoremap [ []<left>
 inoremap {<cr> {<cr>}<c-o>O<tab>
 
 inoremap <F1> <ESC>:w<CR>a
