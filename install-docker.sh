@@ -1,4 +1,5 @@
 #!/bin/bash
+apt -y install sudo
 sudo apt-get -y remove docker docker-engine docker.io containerd runc;
 sudo apt-get -y update;
 sudo apt-get -y install \
@@ -14,3 +15,6 @@ echo \
 sudo chmod a+r /etc/apt/keyrings/docker.gpg;
 sudo apt-get -y  update;
 sudo apt-get -y  install docker-ce docker-ce-cli containerd.io docker-compose-plugin;
+sudo usermod -aG sudo dghonyan;
+sudo usermod -aG docker  dghonyan;
+sudo systemctl restart docker;
