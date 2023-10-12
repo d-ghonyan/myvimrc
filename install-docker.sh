@@ -21,19 +21,9 @@ sudo apt-get -y  install docker-ce docker-ce-cli containerd.io docker-compose-pl
 
 #for u in $user
 #do
-sudo usermod -aG sudo $user;
 sudo usermod -aG docker $user;
 #done
 
 sudo systemctl restart docker;
-docker volume create wordpress
-docker volume create mysql
 
-#for u in $user
-#do
-su $user
-cd $(HOME)
-mkdir -p data/mysql data/wordpress \
-	&& sudo ln -s /var/lib/docker/volumes/wordpress/_data/ data/wordpress \
-	&& sudo ln -s /var/lib/docker/volumes/mysql/_data/ data/mysql
-#done
+echo "You may need to run 'newgrp docker' to use docker without sudo"

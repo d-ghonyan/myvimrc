@@ -25,4 +25,10 @@ nnoremap <F4> <ESC>:m-2<CR>a
 inoremap <F5> <ESC>:t.<CR>a
 nnoremap <F5> <ESC>:t.<CR>a
 
+imap if<tab> if<space>(<right><cr>{<cr>
+imap while<tab> while<space>(<right><cr>{<cr>
+imap for<tab> for<space>(size_t<space>i<space>=<space>0;<space>i<space><<space>count;<space>++i<right><cr>{<cr>
+
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
 set showmatch
