@@ -5,9 +5,9 @@ syntax on
 colorscheme elflord
 
 inoremap #i #include<space><><left>
-inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ( ()<left>
+inoremap " ""<left>
 inoremap [ []<left>
 inoremap {<cr> {<cr>}<c-o>O<tab>
 
@@ -25,9 +25,22 @@ nnoremap <F4> <ESC>:m-2<CR>a
 inoremap <F5> <ESC>:t.<CR>a
 nnoremap <F5> <ESC>:t.<CR>a
 
-imap if<tab> if<space>(<right><cr>{<cr>
-imap while<tab> while<space>(<right><cr>{<cr>
-imap for<tab> for<space>(size_t<space>i<space>=<space>0;<space>i<space><<space>count;<space>++i<right><cr>{<cr>
+imap if<cr> if<space>(
+imap while<cr> while<space>(
+imap for<cr> for<space>(size_t<space>i<space>=<space>0;<space>i<space><<space>count;<space>++i
+
+" ctrl + c to save
+inoremap <c-c> <c-o>:w<cr>
+nnoremap <c-c> :w<cr>
+
+" \ + arrow keys yo move lines
+inoremap <Leader><Down> <c-o>:m+1<cr>
+inoremap <Leader><Up> <c-o>:m-2<cr>
+nnoremap <Leader><Up> :m-2<cr>
+nnoremap <Leader><Down> :m+1<cr>
+
+" tab to autocomplete
+inoremap <tab> <c-p>
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
