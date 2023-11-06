@@ -9,7 +9,7 @@ inoremap ' ''<left>
 inoremap ( ()<left>
 inoremap " ""<left>
 inoremap [ []<left>
-inoremap {<cr> {<cr>}<c-o>O<tab>
+inoremap {<cr> {<cr>}<c-o>O
 
 inoremap <F1> <ESC>:w<CR>a
 
@@ -25,9 +25,12 @@ nnoremap <F4> <ESC>:m-2<CR>a
 inoremap <F5> <ESC>:t.<CR>a
 nnoremap <F5> <ESC>:t.<CR>a
 
-imap if<cr> if<space>(
-imap while<cr> while<space>(
-imap for<cr> for<space>(size_t<space>i<space>=<space>0;<space>i<space><<space>count;<space>++i
+imap if<cr> if<space>(<right><cr>{<cr>
+imap while<cr> while<space>(<right><cr>{<cr>
+imap for<cr> for<space>(size_t<space>i<space>=<space>0;<space>i<space><<space>count;<space>++i<right><cr>{<cr>
+
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
 
 " ctrl + c to save
 inoremap <c-c> <c-o>:w<cr>
@@ -40,7 +43,8 @@ nnoremap <Leader><Up> :m-2<cr>
 nnoremap <Leader><Down> :m+1<cr>
 
 " tab to autocomplete
-inoremap <tab> <c-p>
+" inoremap <tab> <c-p>
+inoremap <expr> <Tab> getline('.')[col('.')-2] !~ '^\s\?$' \|\| pumvisible() ? '<C-P>' : '<Tab>'
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
