@@ -4,6 +4,7 @@ set tabstop=4
 syntax on
 colorscheme elflord
 
+"basic completion for quotes, brackets, etc.
 inoremap ' ''<left>
 inoremap ( ()<left>
 inoremap " ""<left>
@@ -27,6 +28,7 @@ imap #i #include<space><
 "inoremap <F5> <ESC>:t.<CR>a
 "nnoremap <F5> <ESC>:t.<CR>a
 
+"completion for control structures
 imap if<cr> if<space>(<right><cr>{<cr>
 imap while<cr> while<space>(<right><cr>{<cr>
 imap for<cr> for<space>(size_t<space>i<space>=<space>0;<space>i<space><<space>count;<space>++i<right><cr>{<cr>
@@ -41,6 +43,7 @@ inoremap <Leader><Up> <c-o>:m-2<cr>
 nnoremap <Leader><Up> :m-2<cr>
 nnoremap <Leader><Down> :m+1<cr>
 
+"function to delete both quotes, brackets, etc. when cursor is in the middle
 function! ClearQuotes()
 	let quote = getline('.')[col('.')-1]
 	let quote2 = getline('.')[col('.')-2]
