@@ -3,30 +3,49 @@ set autoindent
 set tabstop=4
 syntax on
 colorscheme elflord
+ 
+"for case insensitive word search
+set ignorecase
+ 
+"trying out logic for typing quotes and friends near words
+function! SmartQuotesEtc(char1, char2)
+	let curr = getline('.')[col('.')-1]
+	let prev = getline('.')[col('.')-2]
+
+	let currmatch = matchstr(curr, '^[a-zA-Z0-9_;:.<>(){}\\?]\?$')
+	let prevmatch = matchstr(prev, '^[a-zA-Z0-9_;:.<>(){}\\?]\?$')
+
+	if (a:char1 == "<" && empty(prevmatch))
+		return a:char1
+	endif
+
+	if (curr == ")" || curr == ">" || curr == "]" || curr == "}")
+		return a:char1.a:char2."\<left>"
+	endif
+
+	if (a:char1 == "(" || a:char1 == "[" || a:char1 == "<")
+		if empty(currmatch) && !empty(prevmatch)
+			return a:char1.a:char2."\<left>"
+		endif
+	endif
+
+	if !empty(currmatch) || 
+			\ !empty(prevmatch)
+		return a:char1
+	endif
+
+	return a:char1.a:char2."\<left>"
+endfunction
 
 "basic completion for quotes, brackets, etc.
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap " ""<left>
-inoremap [ []<left>
-inoremap < <lt>><left>
+inoremap " <C-R>=SmartQuotesEtc('"', '"')<CR>
+inoremap ' <C-R>=SmartQuotesEtc("'", "'")<CR>
+inoremap ( <C-R>=SmartQuotesEtc('(', ')')<CR>
+inoremap [ <C-R>=SmartQuotesEtc('[', ']')<CR>
+inoremap < <C-R>=SmartQuotesEtc('<', '>')<CR>
 inoremap {<cr> {<cr>}<c-o>O
 
-imap #i #include<space><
-
-"inoremap <F1> <ESC>:w<CR>a
-
-"inoremap <F2> <ESC>:wq<CR>
-"nnoremap <F2> :wq<CR>
-
-"inoremap <F3> <ESC>:m+1<CR>a
-"nnoremap <F3> <ESC>:m+1<CR>a
-
-"inoremap <F4> <ESC>:m-2<CR>a
-"nnoremap <F4> <ESC>:m-2<CR>a
-
-"inoremap <F5> <ESC>:t.<CR>a
-"nnoremap <F5> <ESC>:t.<CR>a
+inoremap #i #include<space><><left>
 
 "completion for control structures
 imap if<cr> if<space>(<right><cr>{<cr>
@@ -48,24 +67,34 @@ function! ClearQuotes()
 	let quote = getline('.')[col('.')-1]
 	let quote2 = getline('.')[col('.')-2]
 	if ( (quote == '"' || quote == "'") && quote == quote2 )
-		return "\<ESC>df".quote."a"
+		return "\<ESC>s\<right>\<BS>"
 	elseif (quote2 == "(" && quote == ")")
-		return "\<ESC>df".quote."a"
+		return "\<ESC>s\<right>\<BS>"
 	elseif (quote2 == "[" && quote == "]")
-		return "\<ESC>df".quote."a"
+		return "\<ESC>s\<right>\<BS>"
 	elseif (quote2 == "{" && quote == "}")
-		return "\<ESC>df".quote."a"
+		return "\<ESC>s\<right>\<BS>"
 	elseif (quote2 == "<" && quote == ">")
-		return "\<ESC>df".quote."a"
+		return "\<ESC>s\<right>\<BS>"	
 	else
 		return "\<BS>"
 	endif
 endfunction
 
-" tab to autocomplete
-" inoremap <tab> <c-p>
-inoremap <expr> <Tab> getline('.')[col('.')-2] !~ '^\s\?$' \|\| pumvisible() ? '<C-P>' : '<Tab>'
-imap <BS> <C-R>=ClearQuotes()<CR>
+"press tab to autocomplete when near alphanumeric characters or _
+function! Tab_auto()
+	let char = getline('.')[col('.') - 2]
+	let match = matchstr(char, '^[a-zA-Z0-9_]\?$')
+	if pumvisible() || !empty(match)
+		return "\<C-N>"
+	else
+		return "\<TAB>"
+	endif
+endfunction
+
+"function mappings
+inoremap <Tab> <C-R>=Tab_auto()<CR>
+inoremap <BS> <C-R>=ClearQuotes()<CR>
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
