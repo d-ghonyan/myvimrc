@@ -1,9 +1,10 @@
 set mouse=a
-set autoindent
+set smartindent
 set tabstop=4
+set shiftwidth=4
 syntax on
 colorscheme elflord
- 
+
 "for case insensitive word search
 set ignorecase
  
