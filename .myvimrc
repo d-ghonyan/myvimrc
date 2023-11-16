@@ -65,21 +65,17 @@ nnoremap <Leader><Down> :m+1<cr>
 
 "function to delete both quotes, brackets, etc. when cursor is in the middle
 function! ClearQuotes()
-	let quote = getline('.')[col('.')-1]
-	let quote2 = getline('.')[col('.')-2]
-	if ( (quote == '"' || quote == "'") && quote == quote2 )
+	let curr = getline('.')[col('.')-1]
+	let prev = getline('.')[col('.')-2]
+
+	let opening = ['"', "'", "[", "{", "(", "<"]
+	let closing = ['"', "'", "]", "}", ")", ">"]
+
+	if (index(opening, prev) >= 0 && index(opening, prev) == index(closing, curr))
 		return "\<ESC>s\<right>\<BS>"
-	elseif (quote2 == "(" && quote == ")")
-		return "\<ESC>s\<right>\<BS>"
-	elseif (quote2 == "[" && quote == "]")
-		return "\<ESC>s\<right>\<BS>"
-	elseif (quote2 == "{" && quote == "}")
-		return "\<ESC>s\<right>\<BS>"
-	elseif (quote2 == "<" && quote == ">")
-		return "\<ESC>s\<right>\<BS>"	
-	else
-		return "\<BS>"
 	endif
+
+	return "\<BS>"
 endfunction
 
 "press tab to autocomplete when near alphanumeric characters or _
