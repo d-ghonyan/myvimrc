@@ -10,8 +10,8 @@ set ignorecase
  
 "trying out logic for typing quotes and friends near words
 function! SmartQuotesEtc(char1, char2)
-	let curr = getline('.')[col('.')-1]
-	let prev = getline('.')[col('.')-2]
+	let curr = getline('.')[col('.') - 1]
+	let prev = getline('.')[col('.') - 2]
 
 	let currmatch = matchstr(curr, '^[a-zA-Z0-9_;:.<>(){}\\?]\?$')
 	let prevmatch = matchstr(prev, '^[a-zA-Z0-9_;:.<>(){}\\?]\?$')
@@ -65,8 +65,8 @@ nnoremap <Leader><Down> :m+1<cr>
 
 "function to delete both quotes, brackets, etc. when cursor is in the middle
 function! ClearQuotes()
-	let curr = getline('.')[col('.')-1]
-	let prev = getline('.')[col('.')-2]
+	let curr = getline('.')[col('.') - 1]
+	let prev = getline('.')[col('.') - 2]
 
 	let opening = ['"', "'", "[", "{", "(", "<"]
 	let closing = ['"', "'", "]", "}", ")", ">"]
@@ -79,10 +79,15 @@ function! ClearQuotes()
 endfunction
 
 "press tab to autocomplete when near alphanumeric characters or _
+"doesnt't work when you want a tab at the end of line but you can modify it
+"(or just type . and press tab)
 function! Tab_auto()
-	let char = getline('.')[col('.') - 2]
-	let match = matchstr(char, '^[a-zA-Z0-9_]\?$')
-	if pumvisible() || !empty(match)
+	let curr = getline('.')[col('.') - 1]
+	let prev = getline('.')[col('.') - 2]
+	let match = matchstr(prev, '^[a-zA-Z0-9_]\?$')
+	let currmatch = matchstr(curr, '^[a-zA-Z0-9_]\?$')
+
+	if empty(currmatch) && (pumvisible() || !empty(match))
 		return "\<C-N>"
 	else
 		return "\<TAB>"
