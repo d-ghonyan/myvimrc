@@ -82,23 +82,30 @@ function! ClearQuotes()
 endfunction
 
 "press tab to autocomplete when near alphanumeric characters or _
-"doesnt't work when you want a tab at the end of line but you can modify it
-"(or just type . and press tab)
+"press shift-tab to insert a regular tab
 function! Tab_auto()
+	if pumvisible()
+		return "\<C-N>\<C-P>"
+	endif
+
+	return ""
+endfunction
+
+function! Is_empty_match()
 	let curr = getline('.')[col('.') - 1]
 	let prev = getline('.')[col('.') - 2]
 	let match = matchstr(prev, '^[a-zA-Z0-9_]\?$')
 	let currmatch = matchstr(curr, '^[a-zA-Z0-9_]\?$')
 
-	if pumvisible() "empty(currmatch) && (pumvisible() || !empty(match))
-		return "\<C-N>\<C-P>"
-	else
-		return "\<Space>"
+	if empty(currmatch) && !empty(match)
+		return 1
 	endif
+
+	return 0
 endfunction
 
 "function mappings
-inoremap <expr> <Tab> empty(matchstr(getline('.')[col('.') - 1], '^[a-zA-Z0-9_]\?$')) && !empty(matchstr(getline('.')[col('.') - 2], '^[a-zA-Z0-9_]\?$')) ? "\<C-N><C-R>=Tab_auto()<CR>" : "\<TAB>"
+inoremap <expr> <Tab> Is_empty_match() ? "\<C-N><C-R>=Tab_auto()<CR>" : "\<TAB>"
 inoremap <BS> <C-R>=ClearQuotes()<CR>
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
