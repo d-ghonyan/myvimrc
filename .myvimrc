@@ -5,9 +5,12 @@ set shiftwidth=4
 syntax on
 colorscheme elflord
 
+"Shift-Tab when you want a tab and not autocomplete
+inoremap <S-Tab> <TAB>
+
 "for case insensitive word search
 set ignorecase
- 
+
 "trying out logic for typing quotes and friends near words
 function! SmartQuotesEtc(char1, char2)
 	let curr = getline('.')[col('.') - 1]
@@ -87,15 +90,15 @@ function! Tab_auto()
 	let match = matchstr(prev, '^[a-zA-Z0-9_]\?$')
 	let currmatch = matchstr(curr, '^[a-zA-Z0-9_]\?$')
 
-	if empty(currmatch) && (pumvisible() || !empty(match))
-		return "\<C-N>"
+	if pumvisible() "empty(currmatch) && (pumvisible() || !empty(match))
+		return "\<C-N>\<C-P>"
 	else
-		return "\<TAB>"
+		return "\<Space>"
 	endif
 endfunction
 
 "function mappings
-inoremap <Tab> <C-R>=Tab_auto()<CR>
+inoremap <expr> <Tab> empty(matchstr(getline('.')[col('.') - 1], '^[a-zA-Z0-9_]\?$')) && !empty(matchstr(getline('.')[col('.') - 2], '^[a-zA-Z0-9_]\?$')) ? "\<C-N><C-R>=Tab_auto()<CR>" : "\<TAB>"
 inoremap <BS> <C-R>=ClearQuotes()<CR>
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
