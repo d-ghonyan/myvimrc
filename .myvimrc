@@ -88,7 +88,7 @@ function! Tab_auto()
 		return "\<C-N>\<C-P>"
 	endif
 
-	return ""
+	return " "
 endfunction
 
 function! Is_empty_match()
